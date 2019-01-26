@@ -1,11 +1,13 @@
 package com.fhomovc.sportsapp.presenters
 
 import com.fhomovc.sportsapp.data.APIManager
+import com.fhomovc.sportsapp.data.StatsRecorder
 import com.fhomovc.sportsapp.models.StoriesResponseWrapper
 import com.fhomovc.sportsapp.models.Story
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class MainActivityPresenter(private var mainView: MainView) {
 
@@ -21,7 +23,7 @@ class MainActivityPresenter(private var mainView: MainView) {
             }
 
             override fun onFailure(call: Call<StoriesResponseWrapper>, t: Throwable) {
-                onError()
+                onError(t.message.orEmpty())
             }
         })
     }
@@ -31,16 +33,18 @@ class MainActivityPresenter(private var mainView: MainView) {
         if (response?.body() != null) {
             val list: List<Story> = response.body()!!.items
             mainView.setData(list)
+            StatsRecorder.createStat("display", System.currentTimeMillis().toString())
         } else {
-            //TODO log error
+            StatsRecorder.createStat("error", "Empty response body")
         }
-
     }
 
-    fun onError() {
+    fun onError(message: String) {
         mainView.hideProgress()
         mainView.showError()
+        StatsRecorder.createStat("error", message)
     }
+
 
     interface MainView {
         fun showProgress()

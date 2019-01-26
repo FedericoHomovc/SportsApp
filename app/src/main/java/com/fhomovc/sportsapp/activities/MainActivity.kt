@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import com.fhomovc.sportsapp.R
 import com.fhomovc.sportsapp.adapters.StoryAdapter
+import com.fhomovc.sportsapp.data.StatsRecorder
 import com.fhomovc.sportsapp.models.Story
 import com.fhomovc.sportsapp.presenters.MainActivityPresenter
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity(), MainActivityPresenter.MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setUpRecyclerView()
+        StatsRecorder.createStat("load", System.currentTimeMillis().toString())
         mPresenter.loadStories()
     }
 
