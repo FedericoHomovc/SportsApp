@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Sports App</string>
+    <string name="network_error_msg">Error fetching data</string>
 </resources>
